@@ -32,13 +32,15 @@ class Game():
         if tentativa in self.palavra:
             self.setDescoberta(tentativa)
         else:
-            self.chance -= 1
-            self.letras_erradas.append(tentativa)
-            print(f"Letra incorreta. Tentativas restantes: {self.chance}!")
+            self.reduzirChance()
+            self.setLetrasErradas(tentativa)
 
     @classmethod
     def choiceWord(self):
         return random.choice(self.lista_palavras)
+    
+    def reduzirChance(self):
+        self.chance -= 1
     
     def getDescobertas(self):
         return ['_' for letra in self.palavra]
@@ -49,6 +51,10 @@ class Game():
             if letra == tentativa:
                 self.letras_descobertas[index] = letra
             index += 1
+
+    def setLetrasErradas(self, tentativa):
+        self.letras_erradas.append(tentativa)
+        print(f"Letra incorreta. Tentativas restantes: {self.chance}!")
     
     def voceVenceu(self):
         Tela.limpar()
