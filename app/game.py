@@ -1,3 +1,4 @@
+from app.tela import Tela
 import random
 
 class Game():
@@ -29,11 +30,7 @@ class Game():
         tentativa = input("\nDigite uma letra: ").lower()
 
         if tentativa in self.palavra:
-            index = 0
-            for letra in self.palavra:
-                if letra == tentativa:
-                    self.letras_descobertas[index] = letra
-                index += 1
+            self.setDescoberta(tentativa)
         else:
             self.chance -= 1
             self.letras_erradas.append(tentativa)
@@ -46,8 +43,17 @@ class Game():
     def getDescobertas(self):
         return ['_' for letra in self.palavra]
     
+    def setDescoberta(self, tentativa):
+        index = 0
+        for letra in self.palavra:
+            if letra == tentativa:
+                self.letras_descobertas[index] = letra
+            index += 1
+    
     def voceVenceu(self):
-        print(f"Parabéns, você venceu, a palavra é {self.palavra}!")
+        Tela.limpar()
+        print(f"Parabéns, você venceu!\nA palavra é {self.palavra.upper()}")
     
     def vocePerdeu(self):
-        print(f"Você perdeu a palavra é {self.palavra}")
+        Tela.limpar()
+        print(f"Você perdeu!\nA palavra é {self.palavra.upper()}")
