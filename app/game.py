@@ -7,7 +7,7 @@ class Game():
 
     def __init__(self):
         self.chance = 6
-        self.palavra = 'romã'#self.choiceWord()
+        self.palavra = self.choiceWord()
         self.letras_descobertas = self.getDescobertas()
         self.letras_erradas = []
         self.jogar()
@@ -33,7 +33,7 @@ class Game():
         print(f"Letras erradas: ", " ".join(self.letras_erradas))
         self.forca()
 
-        tentativa = input("\nDigite uma letra: ").lower()
+        tentativa = self.pegarTentativa()
 
         if unidecode.unidecode(tentativa) in unidecode.unidecode(self.palavra):
             self.setDescoberta(tentativa)
@@ -71,7 +71,17 @@ class Game():
         self.forca()
         print(f"Você perdeu!\nA palavra é {self.palavra.upper()}")
 
-    
+    def pegarTentativa(self):
+        while True:
+            tentativa = input("\nDigite uma letra: ").lower()
+            if len(self.letras_erradas) == 0:
+                break
+            elif not (unidecode.unidecode(tentativa) in [unidecode.unidecode(l) for l in self.letras_erradas]):
+                break
+            else:
+                print(f"\nA letra \"{tentativa}\" já foi digitada!\n")
+        return tentativa
+
     def forca(self):
         if self.chance == 6:
             print("________")
