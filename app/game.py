@@ -1,15 +1,19 @@
 from app.tela import Tela
 import random
+import unidecode
 
 class Game():
-    lista_palavras = ['abacate', 'banana', 'abacaxi', 'pera', 'tangerina', 'caqui']
+    lista_palavras = ['abacate', 'banana', 'abacaxi', 'pera', 'tangerina', 'caqui', 'manga', 'melancia', 'kiwi', 'romã']
 
     def __init__(self):
         self.chance = 6
-        self.palavra = self.choiceWord()
+        self.palavra = 'romã'#self.choiceWord()
         self.letras_descobertas = self.getDescobertas()
         self.letras_erradas = []
+        self.jogar()
 
+
+    def jogar(self):
         print("\nBem-vindo(a) ao jogo da forca!")
         print("Advinhe a palavra abaixo:\n")
 
@@ -22,14 +26,16 @@ class Game():
             if self.chance == 0:
                 self.vocePerdeu()
 
+
     def rodada(self):
         print("".join(self.letras_descobertas))
         print(f"\nChances restantes: {self.chance}")
         print(f"Letras erradas: ", " ".join(self.letras_erradas))
+        self.forca()
 
         tentativa = input("\nDigite uma letra: ").lower()
 
-        if tentativa in self.palavra:
+        if unidecode.unidecode(tentativa) in unidecode.unidecode(self.palavra):
             self.setDescoberta(tentativa)
         else:
             self.reduzirChance()
@@ -48,7 +54,7 @@ class Game():
     def setDescoberta(self, tentativa):
         index = 0
         for letra in self.palavra:
-            if letra == tentativa:
+            if unidecode.unidecode(letra) == unidecode.unidecode(tentativa):
                 self.letras_descobertas[index] = letra
             index += 1
 
@@ -62,4 +68,72 @@ class Game():
     
     def vocePerdeu(self):
         Tela.limpar()
+        self.forca()
         print(f"Você perdeu!\nA palavra é {self.palavra.upper()}")
+
+    
+    def forca(self):
+        if self.chance == 6:
+            print("________")
+            print("|      |")
+            print("|")
+            print("|")
+            print("|")
+            print("|")
+            print("|_______")
+            print("|      |")
+        elif self.chance == 5:
+            print("________")
+            print("|      |")
+            print("|      O")
+            print("|")
+            print("|")
+            print("|")
+            print("|_______")
+            print("|      |")
+        elif self.chance == 4:
+            print("________")
+            print("|      |")
+            print("|     \\O")
+            print("|")
+            print("|")
+            print("|")
+            print("|_______")
+            print("|      |")
+        elif self.chance == 3:
+            print("________")
+            print("|      |")
+            print("|     \\O/")
+            print("|")
+            print("|")
+            print("|")
+            print("|_______")
+            print("|      |")
+        elif self.chance == 2:
+            print("________")
+            print("|      |")
+            print("|     \\O/")
+            print("|      |")
+            print("|")
+            print("|")
+            print("|_______")
+            print("|      |")
+        elif self.chance == 1:
+            print("________")
+            print("|      |")
+            print("|     \\O/")
+            print("|      |")
+            print("|     / ")
+            print("|")
+            print("|_______")
+            print("|      |")
+        elif self.chance == 0:
+            print("________")
+            print("|      |")
+            print("|     \\O/")
+            print("|      |")
+            print("|     / \\")
+            print("|")
+            print("|_______")
+            print("|      |")
+
