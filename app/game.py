@@ -7,8 +7,8 @@ class Game():
 
     def __init__(self):
         self.chance = 6
-        self.palavra = self.choiceWord()
-        self.letras_descobertas = self.getDescobertas()
+        self.palavra = self.escolherPalavra()
+        self.letras_descobertas = self.pegarDescobertas()
         self.letras_erradas = []
         self.jogar()
 
@@ -28,37 +28,40 @@ class Game():
 
 
     def rodada(self):
-        print("".join(self.letras_descobertas))
-        print(f"\nChances restantes: {self.chance}")
-        print(f"Letras erradas: ", " ".join(self.letras_erradas))
-        self.forca()
+        self.prepararRodada()
 
         tentativa = self.pegarTentativa()
 
         if unidecode.unidecode(tentativa) in unidecode.unidecode(self.palavra):
-            self.setDescoberta(tentativa)
+            self.setarDescoberta(tentativa)
         else:
             self.reduzirChance()
-            self.setLetrasErradas(tentativa)
+            self.setarLetrasErradas(tentativa)
 
+    def prepararRodada(self):
+        print("".join(self.letras_descobertas))
+        print(f"\nChances restantes: {self.chance}")
+        print(f"Letras erradas: ", " ".join(self.letras_erradas))
+        self.forca()
+    
     @classmethod
-    def choiceWord(self):
+    def escolherPalavra(self):
         return random.choice(self.lista_palavras)
     
     def reduzirChance(self):
         self.chance -= 1
     
-    def getDescobertas(self):
+    def pegarDescobertas(self):
         return ['_' for letra in self.palavra]
     
-    def setDescoberta(self, tentativa):
+    def setarDescoberta(self, tentativa):
         index = 0
         for letra in self.palavra:
             if unidecode.unidecode(letra) == unidecode.unidecode(tentativa):
                 self.letras_descobertas[index] = letra
             index += 1
 
-    def setLetrasErradas(self, tentativa):
+    def setarLetrasErradas(self, tentativa):
         self.letras_erradas.append(tentativa)
         print(f"Letra incorreta. Tentativas restantes: {self.chance}!")
     
